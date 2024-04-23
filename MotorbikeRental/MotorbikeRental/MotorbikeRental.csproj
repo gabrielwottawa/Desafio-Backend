@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MotorbikeRental.Domain\MotorbikeRental.Domain.csproj" />
+    <ProjectReference Include="..\MotorbikeRental.Infrastructure\MotorbikeRental.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

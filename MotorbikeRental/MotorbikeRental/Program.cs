@@ -1,5 +1,6 @@
 using MotorbikeRental.Configurations;
 using MotorbikeRental.Domain;
+using MotorbikeRental.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -18,6 +19,7 @@ builder.Services.AddLocalization();
 builder.Services.AddControllers();
 
 builder.Services.AddDomainBootstrapper();
+builder.Services.AddInfrastructureBootstrapper();
 builder.AddMediatRConfiguration();
 builder.AddSwaggerConfiguration();
 builder.Services.AddEndpointsApiExplorer();
