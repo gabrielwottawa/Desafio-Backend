@@ -20,6 +20,19 @@ namespace MotorbikeRental.Controllers
             this.mediator = mediator;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetMotorbikesAsync(string? plate, int? pageNumber, int? pageSize)
+        {
+            try
+            {
+                return Ok(await mediator.Send(new GetMotorbikesCommand(plate, pageNumber, pageSize)));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
+
         [HttpPost("create-motorbike")]
         public async Task<IActionResult> CreateMotorbikeAsync([FromBody] CreateMotorbikeCommand command)
         {
