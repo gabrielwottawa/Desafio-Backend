@@ -45,5 +45,18 @@ namespace MotorbikeRental.Controllers
                 return BadRequest(new { ex.Message });
             }
         }
+
+        [HttpPatch("update-plate")]
+        public async Task<IActionResult> UpdateMotorbikePlateAsync([FromBody] UpdateMotorbikeCommand command)
+        {
+            try
+            {
+                return Ok(await mediator.Send(command));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
     }
 }
