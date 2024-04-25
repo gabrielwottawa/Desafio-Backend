@@ -16,7 +16,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
 
         public async Task<IEnumerable<Motorbike>> GetAllMotorbike()
         {
-            return await _postgreSQLDatabaseContext.Connection.QueryAsync<Motorbike>("SELECT * FROM \"Motorbike\"");
+            return await _postgreSQLDatabaseContext.Connection.QueryAsync<Motorbike>("SELECT * FROM motorbike");
         }
     }
 }

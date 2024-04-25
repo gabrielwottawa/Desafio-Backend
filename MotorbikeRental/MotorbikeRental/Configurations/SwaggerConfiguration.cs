@@ -40,27 +40,28 @@ namespace MotorbikeRental.Configurations
                     }
                 });
 
-                swagger.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme()
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
-                    In = ParameterLocation.Header,
-                    Name = "Api-Key",
-                    Description = "Authentication key for API requests.",
+                    Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
-                });
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
 
-                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement{
                 {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "ApiKey"
-                            }
-                        },
-                        new string[] { }
-                    }
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
                 });
 
                 SetXmlDocumentation(swagger);

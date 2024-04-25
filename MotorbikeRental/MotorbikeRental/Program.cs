@@ -1,6 +1,7 @@
 using MotorbikeRental.Configurations;
 using MotorbikeRental.Domain;
 using MotorbikeRental.Infrastructure;
+using MotorbikeRental.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -14,15 +15,21 @@ builder.Host.ConfigureAppConfiguration((env, config) =>
     .AddEnvironmentVariables();
 });
 
+builder.AddJwtBearerConfiguration();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddLocalization();
 builder.Services.AddControllers();
 
-builder.Services.AddDomainBootstrapper();
-builder.Services.AddInfrastructureBootstrapper();
 builder.AddMediatRConfiguration();
 builder.AddSwaggerConfiguration();
+
+builder.Services.AddDomainBootstrapper();
+builder.Services.AddInfrastructureBootstrapper();
+builder.Services.AddServicesBootstrapper();
+
 builder.Services.AddEndpointsApiExplorer();
+
 
 var app = builder.Build();
 
@@ -38,12 +45,10 @@ app.UseSwaggerUI(s =>
 });
 
 app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseRouting();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();

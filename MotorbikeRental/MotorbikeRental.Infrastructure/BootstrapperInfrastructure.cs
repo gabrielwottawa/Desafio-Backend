@@ -15,6 +15,7 @@ namespace MotorbikeRental.Infrastructure
             services.AddScoped<PostgreSQLDatabaseContext, PostgreSQLContext>();
 
             services.AddScoped<IMotorbikeRepository, MotorbikeRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
         }
     }
 }

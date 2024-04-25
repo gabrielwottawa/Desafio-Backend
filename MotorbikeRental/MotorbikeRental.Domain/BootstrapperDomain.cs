@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using MotorbikeRental.Domain.Commands.Auth;
 using MotorbikeRental.Domain.Commands.Test;
+using MotorbikeRental.Domain.Handlers;
 using MotorbikeRental.Domain.Handlers.Test;
 
 namespace MotorbikeRental.Domain
@@ -14,6 +16,10 @@ namespace MotorbikeRental.Domain
 
             #region TestController
             services.AddScoped<IRequestHandler<TestCommand, string>, TestHandler>();
+            #endregion
+
+            #region AuthController
+            services.AddScoped<IRequestHandler<AuthCommand, string>, AuthHandler>();
             #endregion
         }
     }
