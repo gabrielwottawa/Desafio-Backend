@@ -1,6 +1,8 @@
-﻿namespace MotorbikeRental.Infrastructure.Models
+﻿using System.Numerics;
+
+namespace MotorbikeRental.Infrastructure.Models
 {
-    public class Motorbike
+    public class Motorbikes
     {
         public int Id { get; set; }
         public string Plate { get; set; }

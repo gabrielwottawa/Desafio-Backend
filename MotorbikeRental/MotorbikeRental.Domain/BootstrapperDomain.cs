@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using MotorbikeRental.Domain.Commands.Auth;
-using MotorbikeRental.Domain.Commands.Test;
+using MotorbikeRental.Domain.Commands.Motorbike;
 using MotorbikeRental.Domain.Handlers.Auth;
-using MotorbikeRental.Domain.Handlers.Test;
+using MotorbikeRental.Domain.Handlers.Motorbike;
+using MotorbikeRental.Domain.Responses;
 
 namespace MotorbikeRental.Domain
 {
@@ -14,12 +15,12 @@ namespace MotorbikeRental.Domain
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
 
-            #region TestController
-            services.AddScoped<IRequestHandler<TestCommand, string>, TestHandler>();
+            #region AuthController
+            services.AddScoped<IRequestHandler<AuthCommand, CommandResult>, AuthHandler>();
             #endregion
 
-            #region AuthController
-            services.AddScoped<IRequestHandler<AuthCommand, string>, AuthHandler>();
+            #region MotorbikeController
+            services.AddScoped<IRequestHandler<CreateMotorbikeCommand, CommandResult>, CreateMotorbikeHandler>();
             #endregion
         }
     }

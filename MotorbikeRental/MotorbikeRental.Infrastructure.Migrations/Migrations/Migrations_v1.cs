@@ -21,12 +21,12 @@ namespace MotorbikeRental.Infrastructure.Migrations.Migrations
                 .WithColumn("password").AsString().NotNullable()
                 .WithColumn("usertypeid").AsInt32().NotNullable().ForeignKey("FK_UserTypeId", "usertype", "id")
                 .WithColumn("token").AsString().Nullable()
-                .WithColumn("tokendateexpire").AsDateTime().Nullable();            
+                .WithColumn("tokendateexpire").AsDateTime().Nullable();
 
             Create.Table("motorbike")
                 .WithColumn("id").AsInt32().Identity().NotNullable().PrimaryKey()
                 .WithColumn("plate").AsString(10).NotNullable().PrimaryKey()
-                .WithColumn("year").AsInt64().NotNullable()
+                .WithColumn("year").AsInt32().NotNullable()
                 .WithColumn("type").AsString(50).NotNullable();
 
             Create.Table("registertype")
@@ -40,7 +40,7 @@ namespace MotorbikeRental.Infrastructure.Migrations.Migrations
                 .WithColumn("dateofbirth").AsDate().NotNullable()
                 .WithColumn("registernumber").AsString().NotNullable().PrimaryKey()
                 .WithColumn("registertypeid").AsInt32().NotNullable().ForeignKey("FK_RegisterTypeId", "registertype", "id")
-                .WithColumn("urlimage").AsString(100).NotNullable();            
+                .WithColumn("urlimage").AsString(100).NotNullable();
 
             InsertDataRegisterType();
             InsertDataUserType();
