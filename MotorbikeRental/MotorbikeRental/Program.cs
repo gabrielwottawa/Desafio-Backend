@@ -15,7 +15,7 @@ builder.Host.ConfigureAppConfiguration((env, config) =>
     .AddEnvironmentVariables();
 });
 
-builder.AddJwtBearerConfiguration();
+builder.AddJwtBearerConfiguration(builder.Configuration);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddLocalization();

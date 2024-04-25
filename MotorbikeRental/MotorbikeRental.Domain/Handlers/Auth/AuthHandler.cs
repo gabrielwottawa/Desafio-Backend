@@ -3,7 +3,7 @@ using MotorbikeRental.Domain.Commands.Auth;
 using MotorbikeRental.Infrastructure.Repositories.IRepositories;
 using MotorbikeRental.Services.Auth;
 
-namespace MotorbikeRental.Domain.Handlers
+namespace MotorbikeRental.Domain.Handlers.Auth
 {
     public class AuthHandler : IRequestHandler<AuthCommand, string>
     {

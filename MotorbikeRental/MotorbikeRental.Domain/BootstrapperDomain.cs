@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using MotorbikeRental.Domain.Commands.Auth;
 using MotorbikeRental.Domain.Commands.Test;
-using MotorbikeRental.Domain.Handlers;
+using MotorbikeRental.Domain.Handlers.Auth;
 using MotorbikeRental.Domain.Handlers.Test;
 
 namespace MotorbikeRental.Domain

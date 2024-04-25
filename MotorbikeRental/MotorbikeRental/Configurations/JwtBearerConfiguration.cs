@@ -7,13 +7,12 @@ namespace MotorbikeRental.Configurations
 {
     public static class JwtBearerConfiguration
     {
-        public static WebApplicationBuilder AddJwtBearerConfiguration(this WebApplicationBuilder builder)
+        public static WebApplicationBuilder AddJwtBearerConfiguration(this WebApplicationBuilder builder, IConfiguration configuration)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
 
-            var key = Encoding.UTF8.GetBytes("5SkKvsaSD1rsF358m2HI9EI1ZlVi1bWauUdyam34Jp4=");
-            //var key = Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]);
+            var key = Encoding.UTF8.GetBytes(configuration.GetSection("KeyAuth").Value);
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

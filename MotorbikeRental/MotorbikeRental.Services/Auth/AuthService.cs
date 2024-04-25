@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MotorbikeRental.Infrastructure.Models;
 using MotorbikeRental.Services.Auth.Extension;
@@ -10,10 +11,12 @@ namespace MotorbikeRental.Services.Auth
     public class AuthService : IAuthService
     {
         private readonly string _key;
+        private readonly IConfiguration _configuration;
 
-        public AuthService()
+        public AuthService(IConfiguration configuration)
         {
-            _key = "5SkKvsaSD1rsF358m2HI9EI1ZlVi1bWauUdyam34Jp4=";
+            _configuration = configuration;
+            _key = _configuration.GetSection("KeyAuth").Value;
         }
 
         public string Authenticate(Users users)
