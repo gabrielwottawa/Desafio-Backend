@@ -7,8 +7,7 @@ if (args.Length != 1)
 {
     var oldForegroundColor = Console.ForegroundColor;
     Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine(
-        "Informe como unico parametro a string de conexao com o SQL Server/Azure SQL!");
+    Console.WriteLine("ConnectionString PostgreSQL");
     Console.ForegroundColor = oldForegroundColor;
     return;
 }

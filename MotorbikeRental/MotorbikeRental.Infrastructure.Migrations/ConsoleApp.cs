@@ -21,12 +21,12 @@ namespace MotorbikeRental.Infrastructure.Migrations
 
             try
             {
+                //_migrationRunner.MigrateDown(1);
                 _migrationRunner.MigrateUp();
             }
             catch (Exception ex)
             {
-                _logger.LogError(
-                    $"Erro durante a execucao das Migrations: {ex.Message} | {ex.GetType().Name}");
+                _logger.LogError($"Erro durante a execucao das Migrations: {ex.Message} | {ex.GetType().Name}");
             }
 
             _logger.LogInformation("Verificacao das Migrations concluida.");

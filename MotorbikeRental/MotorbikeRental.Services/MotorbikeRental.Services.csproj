@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.5.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MotorbikeRental.Infrastructure\MotorbikeRental.Infrastructure.csproj" />
-    <ProjectReference Include="..\MotorbikeRental.Services\MotorbikeRental.Services.csproj" />
   </ItemGroup>
 
 </Project>
