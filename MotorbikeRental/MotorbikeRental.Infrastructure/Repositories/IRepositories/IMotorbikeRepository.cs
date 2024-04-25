@@ -4,7 +4,7 @@ namespace MotorbikeRental.Infrastructure.Repositories.IRepositories
 {
     public interface IMotorbikeRepository
     {
-        Task<IEnumerable<Motorbikes>> GetAllMotorbike();
+        Task<IEnumerable<Motorbikes>> GetAllMotorbikes(string? plate);
         Task<Motorbikes> GetMotorbikeByPlate(string plate);
         Task InsertMotorbike(Motorbikes motorbike);
     }

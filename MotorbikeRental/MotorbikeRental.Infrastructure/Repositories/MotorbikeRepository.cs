@@ -14,9 +14,14 @@ namespace MotorbikeRental.Infrastructure.Repositories
             _postgreSQLDatabaseContext = postgreSQLDatabaseContext;
         }
 
-        public async Task<IEnumerable<Motorbikes>> GetAllMotorbike()
+        public async Task<IEnumerable<Motorbikes>> GetAllMotorbikes(string? plate)
         {
-            return await _postgreSQLDatabaseContext.Connection.QueryAsync<Motorbikes>("SELECT * FROM motorbike");
+            var sqlCommand = "SELECT * FROM motorbike";
+
+            if (plate != null)
+                sqlCommand += " WHERE plate = @plate";
+
+            return await _postgreSQLDatabaseContext.Connection.QueryAsync<Motorbikes>(sqlCommand, new { plate });
         }
 
         public async Task<Motorbikes> GetMotorbikeByPlate(string plate)
