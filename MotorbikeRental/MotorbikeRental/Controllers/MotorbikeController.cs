@@ -1,29 +1,31 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MotorbikeRental.Domain.Commands.Auth;
+using MotorbikeRental.Domain.Commands.Motorbike;
 using MotorbikeRental.Filters;
 using System.Net.Mime;
 
 namespace MotorbikeRental.Controllers
 {
+    [Authorize(Policy = "Admin")]
     [CustomExceptionFilter]
     [ApiController, Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
-    [Route("api/v1/auth", Name = "Authentication")]
-    public class AuthController : Controller
+    [Route("api/v1/motorbike", Name = "Authentication")]
+    public class MotorbikeController : Controller
     {
         private readonly IMediator mediator;
 
-        public AuthController(IMediator mediator)
+        public MotorbikeController(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
-        [HttpPost("generate-token")]
-        public async Task<IActionResult> GenerateTokenAsync([FromBody] AuthCommand authCommand)
+        [HttpPost("create-motorbike")]
+        public async Task<IActionResult> CreateMotorbikeAsync([FromBody] CreateMotorbikeCommand command)
         {
             try
             {
-                return Ok(await mediator.Send(authCommand));
+                return Ok(await mediator.Send(command));
             }
             catch (Exception ex)
             {

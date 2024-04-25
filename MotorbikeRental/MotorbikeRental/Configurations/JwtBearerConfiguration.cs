@@ -21,7 +21,6 @@ namespace MotorbikeRental.Configurations
                 {
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidateLifetime = false,
                     ValidateIssuerSigningKey = false,
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };

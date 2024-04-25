@@ -16,7 +16,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
 
         public async Task<Users> GetUser(string name, string password)
         {
-            return await _postgreSQLDatabaseContext.Connection.QueryFirstAsync<Users>(
+            return await _postgreSQLDatabaseContext.Connection.QuerySingleOrDefaultAsync<Users>(
                     @"SELECT 
                         * 
                       FROM 
