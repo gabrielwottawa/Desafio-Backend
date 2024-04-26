@@ -33,14 +33,14 @@ namespace MotorbikeRental.Infrastructure.Migrations.Migrations
                 .WithColumn("id").AsInt32().Identity().NotNullable().PrimaryKey()
                 .WithColumn("type").AsString().NotNullable();
 
-            Create.Table("deliveryman")
+            Create.Table("couriers")
                 .WithColumn("id").AsInt32().Identity().NotNullable().PrimaryKey()
                 .WithColumn("name").AsString(100).NotNullable()
                 .WithColumn("cnpj").AsString(25).NotNullable().PrimaryKey()
                 .WithColumn("dateofbirth").AsDate().NotNullable()
                 .WithColumn("registernumber").AsString().NotNullable().PrimaryKey()
                 .WithColumn("registertypeid").AsInt32().NotNullable().ForeignKey("FK_RegisterTypeId", "registertype", "id")
-                .WithColumn("urlimage").AsString(100).NotNullable();
+                .WithColumn("urlimage").AsString(100).Nullable();
 
             InsertDataRegisterType();
             InsertDataUserType();
