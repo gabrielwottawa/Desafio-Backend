@@ -9,5 +9,6 @@ namespace MotorbikeRental.Infrastructure.Repositories.IRepositories
         Task<Motorbikes> GetMotorbikeById(int id);
         Task InsertMotorbike(Motorbikes motorbike);
         Task UpdateMotorbike(int id, string plate);
+        Task DeleteMotorbikeById(int id);
     }
 }

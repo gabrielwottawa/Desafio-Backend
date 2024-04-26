@@ -1,10 +1,12 @@
 ﻿using Npgsql;
+using System.Data;
 
 namespace MotorbikeRental.Infrastructure.PostgreSQL
 {
     public abstract class PostgreSQLDatabaseContext : IDisposable
     {
         public NpgsqlConnection Connection { get; }
+        public IDbTransaction Transaction { get; set; }
 
         protected PostgreSQLDatabaseContext(string connectionString)
         {

@@ -58,5 +58,18 @@ namespace MotorbikeRental.Controllers
                 return BadRequest(new { ex.Message });
             }
         }
+
+        [HttpDelete("delete-motorbike")]
+        public async Task<IActionResult> DeleteMotorbikeAsync([FromQuery] DeleteMotorbikeCommand command)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
     }
 }
