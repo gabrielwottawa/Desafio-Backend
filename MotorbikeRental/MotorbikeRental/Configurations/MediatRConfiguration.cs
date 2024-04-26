@@ -12,7 +12,7 @@ namespace MotorbikeRental.Configurations
 
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
-            var assembly = AppDomain.CurrentDomain.Load("MotorbikeRental.Domain");
+            var assembly = AppDomain.CurrentDomain.Load("MotorbikeRental.Domain"); //Assembly.Load("MotorbikeRental.Domain");
             AssemblyScanner
             .FindValidatorsInAssembly(assembly)
                 .ForEach(result => builder.Services.AddScoped(result.InterfaceType, result.ValidatorType));

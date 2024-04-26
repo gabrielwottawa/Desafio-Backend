@@ -16,13 +16,13 @@ namespace MotorbikeRental.Infrastructure.Repositories
             _postgreSQLDatabaseContext = postgreSQLDatabaseContext;
         }
 
-        public Task<RegisterType> GetRegisterTypeByType(string registerType)
+        public async Task<RegisterType> GetRegisterTypeByType(string registerType)
         {
             BeginTransaction();
 
             try
             {
-                var result = _postgreSQLDatabaseContext.Connection.QuerySingleOrDefaultAsync<RegisterType>(
+                var result = await _postgreSQLDatabaseContext.Connection.QuerySingleOrDefaultAsync<RegisterType>(
                                 @"SELECT * FROM registertype WHERE type = @registerType"
                                 , new { registerType }
                                 , _transaction);
