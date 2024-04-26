@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using MotorbikeRental.Domain.Commands.Auth;
+using MotorbikeRental.Domain.Commands.Courier;
 using MotorbikeRental.Domain.Commands.Motorbike;
 using MotorbikeRental.Domain.Handlers.Auth;
+using MotorbikeRental.Domain.Handlers.Courier;
 using MotorbikeRental.Domain.Handlers.Motorbike;
 using MotorbikeRental.Domain.Responses;
 
@@ -24,6 +26,10 @@ namespace MotorbikeRental.Domain
             services.AddScoped<IRequestHandler<GetMotorbikesCommand, CommandResult>, GetMotorbikesHandler>();
             services.AddScoped<IRequestHandler<UpdateMotorbikeCommand, CommandResult>, UpdateMotorbikeHandler>();
             services.AddScoped<IRequestHandler<DeleteMotorbikeCommand, CommandResult>, DeleteMotorbikeHandler>();
+            #endregion
+
+            #region
+            services.AddScoped<IRequestHandler<CreateCourierCommand, CommandResult>, CreateCourierHandler>();
             #endregion
         }
     }

@@ -10,7 +10,7 @@ namespace MotorbikeRental.Controllers
     [Authorize(Policy = "Admin")]
     [CustomExceptionFilter]
     [ApiController, Consumes(MediaTypeNames.Application.Json), Produces(MediaTypeNames.Application.Json)]
-    [Route("api/v1/motorbike", Name = "Authentication")]
+    [Route("api/v1/motorbike", Name = "Motorbike")]
     public class MotorbikeController : Controller
     {
         private readonly IMediator mediator;
