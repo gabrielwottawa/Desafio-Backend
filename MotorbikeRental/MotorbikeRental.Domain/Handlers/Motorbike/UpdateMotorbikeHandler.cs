@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using MotorbikeRental.Domain.Commands.Motorbike;
+using MotorbikeRental.Domain.Exceptions;
 using MotorbikeRental.Domain.Responses;
+using MotorbikeRental.Domain.Validations;
+using MotorbikeRental.Domain.Validations.Motorbike;
 using MotorbikeRental.Infrastructure.Repositories.IRepositories;
 
 namespace MotorbikeRental.Domain.Handlers.Motorbike
@@ -8,6 +11,7 @@ namespace MotorbikeRental.Domain.Handlers.Motorbike
     public class UpdateMotorbikeHandler : IRequestHandler<UpdateMotorbikeCommand, CommandResult>
     {
         private readonly IMotorbikeRepository _motorbikeRepository;
+        private readonly Validator<UpdateMotorbikeCommand> _validator = new(new UpdateMotorbikeCommandValidator());
 
         public UpdateMotorbikeHandler(IMotorbikeRepository motorbikeRepository)
         {
@@ -16,6 +20,8 @@ namespace MotorbikeRental.Domain.Handlers.Motorbike
 
         public async Task<CommandResult> Handle(UpdateMotorbikeCommand request, CancellationToken cancellationToken)
         {
+            await _validator.ValidateAsync(request, cancellationToken);
+
             var motorbike = await _motorbikeRepository.GetMotorbikeById(request.Id);
 
             if (motorbike == null) 

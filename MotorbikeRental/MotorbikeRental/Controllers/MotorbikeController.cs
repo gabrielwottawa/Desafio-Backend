@@ -64,7 +64,7 @@ namespace MotorbikeRental.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(await mediator.Send(command));
             }
             catch (Exception ex)
             {
