@@ -26,7 +26,7 @@ namespace MotorbikeRental.Domain.Handlers.Courier
         {
             await _validator.ValidateAsync(request, cancellationToken);
 
-            var courier = await _couriersRepository.GetCourierByCnpj(request.Cnpj, request.RegisterNumber);
+            var courier = await _couriersRepository.GetCourierByCnpj(request.Cnpj.RemoveSpecialCharacters(), request.RegisterNumber);
 
             if (courier != null)
                 throw new ApplicationException($"Já existe um entregador cadastrado com esse CNPJ: '{request.Cnpj}' e CNH: '{request.RegisterNumber}'");

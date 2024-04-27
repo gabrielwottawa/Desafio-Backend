@@ -12,11 +12,11 @@ namespace MotorbikeRental.Domain.Validations.Courier
                 .NotEmpty()
                 .WithMessage("O nome do entregador deve ser preenchido.");
 
-            RuleFor(x => x.Cnpj.RemoveSpecialCharacters())
+            RuleFor(x => x.Cnpj)
                 .NotEmpty()
                 .WithMessage("O CNPJ deve ser preenchido.");
 
-            RuleFor(x => x.Cnpj.Length != 14)
+            RuleFor(x => x.Cnpj.RemoveSpecialCharacters().Length != 14)
                 .Equal(false)
                 .WithMessage("O cnpj deve possuir 14 números para ser válido.");
 

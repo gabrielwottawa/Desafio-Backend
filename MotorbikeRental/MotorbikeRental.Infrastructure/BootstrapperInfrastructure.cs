@@ -18,6 +18,8 @@ namespace MotorbikeRental.Infrastructure
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<ICouriersRepository, CouriersRepository>();
             services.AddScoped<IRegisterTypeRepository, RegisterTypeRepository>();
+            services.AddScoped<IRentalPlansRepository, RentalPlansRepository>();
+            services.AddScoped<IMotorbikeRentalRepository, MotorbikeRentalRepository>();
         }
     }
 }
