@@ -3,7 +3,10 @@
     public static class StringExtension
     {
         public static string RemoveSpecialCharacters(this string value)
-            => new(value.Where(char.IsDigit).ToArray());
+        {
+            string result = new(value.Where(char.IsDigit).ToArray());
+            return result;
+        }
 
         public static bool ValidateArchiveExtension(this string value, List<string> extensions)
         {

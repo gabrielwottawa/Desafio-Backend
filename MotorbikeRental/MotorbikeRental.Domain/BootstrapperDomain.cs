@@ -3,9 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using MotorbikeRental.Domain.Commands.Auth;
 using MotorbikeRental.Domain.Commands.Courier;
 using MotorbikeRental.Domain.Commands.Motorbike;
+using MotorbikeRental.Domain.Commands.MotorbikeRental;
 using MotorbikeRental.Domain.Handlers.Auth;
 using MotorbikeRental.Domain.Handlers.Courier;
 using MotorbikeRental.Domain.Handlers.Motorbike;
+using MotorbikeRental.Domain.Handlers.MotorbikeRental;
 using MotorbikeRental.Domain.Responses;
 
 namespace MotorbikeRental.Domain
@@ -28,9 +30,13 @@ namespace MotorbikeRental.Domain
             services.AddScoped<IRequestHandler<DeleteMotorbikeCommand, CommandResult>, DeleteMotorbikeHandler>();
             #endregion
 
-            #region
+            #region CourierController
             services.AddScoped<IRequestHandler<CreateCourierCommand, CommandResult>, CreateCourierHandler>();
             services.AddScoped<IRequestHandler<PostDocumentCourierCommand, CommandResult>, PostDocumentCourierHandler>();
+            #endregion
+
+            #region
+            services.AddScoped<IRequestHandler<CreateMotorbikeRentalCommand, CommandResult>, MotorbikeRentalHandler>();
             #endregion
         }
     }

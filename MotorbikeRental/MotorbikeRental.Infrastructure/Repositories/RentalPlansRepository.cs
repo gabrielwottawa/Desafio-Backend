@@ -6,26 +6,25 @@ using Npgsql;
 
 namespace MotorbikeRental.Infrastructure.Repositories
 {
-    public class RegisterTypeRepository : IRegisterTypeRepository
+    public class RentalPlansRepository : IRentalPlansRepository
     {
         private readonly PostgreSQLDatabaseContext _postgreSQLDatabaseContext;
         private NpgsqlTransaction _transaction;
 
-        public RegisterTypeRepository(PostgreSQLDatabaseContext postgreSQLDatabaseContext)
+        public RentalPlansRepository(PostgreSQLDatabaseContext postgreSQLDatabaseContext)
         {
             _postgreSQLDatabaseContext = postgreSQLDatabaseContext;
         }
 
-        public async Task<RegisterType> GetRegisterTypeById(int id)
+        public async Task<IEnumerable<RentalPlans>> GetAllRentalPlans()
         {
             BeginTransaction();
 
             try
             {
-                var result = await _postgreSQLDatabaseContext.Connection.QuerySingleOrDefaultAsync<RegisterType>(
-                                @"SELECT * FROM registertype WHERE id = @id"
-                                , new { id }
-                                , _transaction);
+                var result = await _postgreSQLDatabaseContext.Connection.QueryAsync<RentalPlans>(
+                        @"SELECT * FROM rentalplans"
+                        , _transaction);
 
                 _transaction.Commit();
 
@@ -38,16 +37,16 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task<RegisterType> GetRegisterTypeByType(string registerType)
+        public async Task<RentalPlans> GetRentalPlanById(int id)
         {
             BeginTransaction();
 
             try
             {
-                var result = await _postgreSQLDatabaseContext.Connection.QuerySingleOrDefaultAsync<RegisterType>(
-                                @"SELECT * FROM registertype WHERE type = @registerType"
-                                , new { registerType }
-                                , _transaction);
+                var result = await _postgreSQLDatabaseContext.Connection.QuerySingleOrDefaultAsync<RentalPlans>(
+                        @"SELECT * FROM rentalplans WHERE id = @id"
+                        , new { id }
+                        , _transaction);
 
                 _transaction.Commit();
 
