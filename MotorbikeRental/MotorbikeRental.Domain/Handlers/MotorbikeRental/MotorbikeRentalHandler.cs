@@ -36,7 +36,7 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
             await _validator.ValidateAsync(request, cancellationToken);
 
             var motorbike = await _motorbikeRepository.GetMotorbikeByPlate(request.MotorbikePlate)
-                               ?? throw new ApplicationException($"Não existe moto com a placa {request.MotorbikePlate} fornecidos.");
+                               ?? throw new ApplicationException($"Não existe moto com a placa '{request.MotorbikePlate}' fornecidos.");
 
             var courier = await _couriersRepository.GetCourierByCnpj(request.CourierCnpj.RemoveSpecialCharacters(), request.CourierRegisterNumber)
                                ?? throw new ApplicationException($"Não existe entregador com o CNPJ '{request.CourierCnpj}' e a CNH '{request.CourierRegisterNumber}' fornecidos.");
@@ -47,7 +47,7 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
             var courierRegisterType = await _registerRegisterTypeRepository.GetRegisterTypeById(courier.RegisterTypeId);
 
             if (courierRegisterType.Type == "B")
-                throw new ApplicationException($"Este entregador não possui a CNH do tipo 'A' ou 'AB'. CNH do entregador: {courierRegisterType.Type}");
+                throw new ApplicationException($"Este entregador não possui a CNH do tipo 'A' ou 'AB'. CNH do entregador: '{courierRegisterType.Type}'");
 
             var rentalPlan = await _rentalPlansRepository.GetRentalPlanById(request.RentalPlansId) 
                                ?? throw new ApplicationException("O plano informado não existe.");
@@ -70,7 +70,7 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
 
             await _motorbikeRentalRepository.InsertMotorbikeRental(newMotorbikeRental);
 
-            return new CommandResult { Message = $"Aluguel da moto '{motorbike.Type}' com a placa: {motorbike.Plate} feito com sucesso." };
+            return new CommandResult { Message = $"Aluguel da moto '{motorbike.Type}' com a placa: '{motorbike.Plate}' feito com sucesso." };
         }
     }
 }
