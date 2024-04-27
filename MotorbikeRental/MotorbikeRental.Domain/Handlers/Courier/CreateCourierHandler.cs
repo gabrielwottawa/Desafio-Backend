@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using MotorbikeRental.Domain.Commands.Courier;
-using MotorbikeRental.Domain.Exceptions;
+using MotorbikeRental.Domain.Extensions;
 using MotorbikeRental.Domain.Responses;
 using MotorbikeRental.Domain.Validations;
 using MotorbikeRental.Domain.Validations.Courier;
@@ -37,7 +37,7 @@ namespace MotorbikeRental.Domain.Handlers.Courier
             var newCourier = new Couriers
             {
                 Name = request.Name,
-                Cnpj = request.Cnpj,
+                Cnpj = request.Cnpj.RemoveSpecialCharacters(),
                 DateOfBirth = request.DateOfBirth,
                 RegisterNumber = request.RegisterNumber,
                 RegisterTypeId = registerType.Id
