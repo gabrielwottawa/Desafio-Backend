@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MotorbikeRental.Services.Auth;
+using MotorbikeRental.Services.RabbitMq;
 
 namespace MotorbikeRental.Services
 {

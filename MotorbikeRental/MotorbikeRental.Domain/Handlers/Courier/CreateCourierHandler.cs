@@ -6,6 +6,7 @@ using MotorbikeRental.Domain.Validations;
 using MotorbikeRental.Domain.Validations.Courier;
 using MotorbikeRental.Infrastructure.Models;
 using MotorbikeRental.Infrastructure.Repositories.IRepositories;
+using MotorbikeRental.Services.RabbitMq;
 
 namespace MotorbikeRental.Domain.Handlers.Courier
 {
@@ -43,7 +44,10 @@ namespace MotorbikeRental.Domain.Handlers.Courier
                 RegisterTypeId = registerType.Id
             };
 
-            await _couriersRepository.InsertCourier(newCourier);
+            var rabbitMqService = new RabbitMqService<Couriers>();
+            rabbitMqService.SendMessage(newCourier, "QueueCouriersCreate");
+
+            //await _couriersRepository.InsertCourier(newCourier);
 
             return new CommandResult { Message = "Entregador cadastrado com sucesso.", Data = null };
         }
