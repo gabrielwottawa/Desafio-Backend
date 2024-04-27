@@ -64,6 +64,25 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
+        public async Task InsertUrlImage(int id, string urlImage)
+        {
+            BeginTransaction();
+
+            try
+            {
+                await _postgreSQLDatabaseContext.Connection.ExecuteAsync(
+                        @"UPDATE couriers SET urlimage = @urlImage WHERE id = @id"
+                , new { id, urlImage }
+                , _transaction);
+                _transaction.Commit();
+            }
+            catch (Exception)
+            {
+                _transaction.Rollback();
+                throw;
+            }
+        }
+
         private void BeginTransaction()
         {
             _transaction = _postgreSQLDatabaseContext.Connection.BeginTransaction();

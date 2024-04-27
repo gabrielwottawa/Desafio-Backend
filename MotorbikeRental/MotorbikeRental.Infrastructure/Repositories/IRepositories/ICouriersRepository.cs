@@ -6,5 +6,6 @@ namespace MotorbikeRental.Infrastructure.Repositories.IRepositories
     {
         Task<Couriers> GetCourierByCnpj(string cnpj, string registerNumber);
         Task InsertCourier(Couriers courier);
+        Task InsertUrlImage(int id, string urlImage);
     }
 }

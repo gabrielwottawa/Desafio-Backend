@@ -30,6 +30,7 @@ namespace MotorbikeRental.Domain
 
             #region
             services.AddScoped<IRequestHandler<CreateCourierCommand, CommandResult>, CreateCourierHandler>();
+            services.AddScoped<IRequestHandler<PostDocumentCourierCommand, CommandResult>, PostDocumentCourierHandler>();
             #endregion
         }
     }
