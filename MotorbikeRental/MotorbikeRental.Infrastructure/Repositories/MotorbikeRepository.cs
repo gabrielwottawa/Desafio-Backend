@@ -16,7 +16,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             _postgreSQLDatabaseContext = postgreSQLDatabaseContext;
         }
 
-        public async Task<IEnumerable<Motorbikes>> GetAllMotorbikes(string? plate)
+        public async Task<IEnumerable<Motorbikes>> GetAllMotorbikesAsync(string? plate)
         {
             BeginTransaction();
 
@@ -43,7 +43,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task<Motorbikes> GetMotorbikeByPlate(string plate)
+        public async Task<Motorbikes> GetMotorbikeByPlateAsync(string plate)
         {
             BeginTransaction();
 
@@ -71,7 +71,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task<Motorbikes> GetMotorbikeById(int id)
+        public async Task<Motorbikes> GetMotorbikeByIdAsync(int id)
         {
             BeginTransaction();
 
@@ -99,7 +99,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task InsertMotorbike(Motorbikes motorbike)
+        public async Task InsertMotorbikeAsync(Motorbikes motorbike)
         {
             BeginTransaction();
 
@@ -119,7 +119,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateMotorbike(int id, string plate)
+        public async Task UpdateMotorbikeAsync(int id, string plate)
         {
             BeginTransaction();
 
@@ -138,7 +138,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task DeleteMotorbikeById(int id)
+        public async Task DeleteMotorbikeByIdAsync(int id)
         {
             BeginTransaction();
 

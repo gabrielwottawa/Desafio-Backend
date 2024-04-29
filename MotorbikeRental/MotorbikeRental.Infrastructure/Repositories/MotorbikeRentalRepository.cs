@@ -16,7 +16,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             _postgreSQLDatabaseContext = postgreSQLDatabaseContext;
         }
 
-        public async Task InsertMotorbikeRental(MotorbikeRentals motorbikeRentals)
+        public async Task InsertMotorbikeRentalAsync(MotorbikeRentals motorbikeRentals)
         {
             BeginTransaction();
 
@@ -49,7 +49,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task<bool> IsRentedMotorbike(string plate)
+        public async Task<bool> IsRentedMotorbikeAsync(string plate)
         {
             BeginTransaction();
 
@@ -118,6 +118,37 @@ namespace MotorbikeRental.Infrastructure.Repositories
         private void BeginTransaction()
         {
             _transaction = _postgreSQLDatabaseContext.Connection.BeginTransaction();
+        }
+
+        public async Task<MotorbikeRentals> GetMotorbikeRentalsAsync(string motorbikePlate, string courierCnpj, string courierRegisterNumber)
+        {
+            BeginTransaction();
+
+            try
+            {
+                var result = await _postgreSQLDatabaseContext.Connection.QuerySingleOrDefaultAsync<MotorbikeRentals>(
+                        @"SELECT 
+                            * 
+                        FROM 
+                            motorbikerentals
+                        WHERE
+                            motorbikeplate = @motorbikePlate
+                                AND activerental = 1
+                                    AND couriercnpj = @courierCnpj
+                                        AND courierregisternumber = @courierRegisterNumber"
+                        , new { motorbikePlate, courierCnpj, courierRegisterNumber }
+                        , _transaction
+                        );
+
+                _transaction.Commit();
+
+                return result;
+            }
+            catch (Exception)
+            {
+                _transaction.Rollback();
+                throw;
+            }
         }
     }
 }

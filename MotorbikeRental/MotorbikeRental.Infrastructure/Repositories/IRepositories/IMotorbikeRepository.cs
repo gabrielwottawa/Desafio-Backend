@@ -4,11 +4,11 @@ namespace MotorbikeRental.Infrastructure.Repositories.IRepositories
 {
     public interface IMotorbikeRepository
     {
-        Task<IEnumerable<Motorbikes>> GetAllMotorbikes(string? plate);
-        Task<Motorbikes> GetMotorbikeByPlate(string plate);
-        Task<Motorbikes> GetMotorbikeById(int id);
-        Task InsertMotorbike(Motorbikes motorbike);
-        Task UpdateMotorbike(int id, string plate);
-        Task DeleteMotorbikeById(int id);
+        Task<IEnumerable<Motorbikes>> GetAllMotorbikesAsync(string? plate);
+        Task<Motorbikes> GetMotorbikeByPlateAsync(string plate);
+        Task<Motorbikes> GetMotorbikeByIdAsync(int id);
+        Task InsertMotorbikeAsync(Motorbikes motorbike);
+        Task UpdateMotorbikeAsync(int id, string plate);
+        Task DeleteMotorbikeByIdAsync(int id);
     }
 }

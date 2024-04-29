@@ -4,7 +4,7 @@ namespace MotorbikeRental.Infrastructure.Repositories.IRepositories
 {
     public interface IRegisterTypeRepository
     {
-        Task<RegisterType> GetRegisterTypeByType(string registerType);
-        Task<RegisterType> GetRegisterTypeById(int id);
+        Task<RegisterType> GetRegisterTypeByTypeAsync(string registerType);
+        Task<RegisterType> GetRegisterTypeByIdAsync(int id);
     }
 }

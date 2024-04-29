@@ -4,9 +4,9 @@ namespace MotorbikeRental.Infrastructure.Repositories.IRepositories
 {
     public interface ICouriersRepository
     {
-        Task<Couriers> GetCourierByCnpj(string cnpj, string registerNumber);
+        Task<Couriers> GetCourierByCnpjAndRegisterNumberAsync(string cnpj, string registerNumber);
         Task InsertCourierAsync(Couriers courier);
-        Task InsertUrlImage(int id, string urlImage);
+        Task InsertUrlImageAsync(int id, string urlImage);
         void InsertCourier(Couriers courier);
     }
 }

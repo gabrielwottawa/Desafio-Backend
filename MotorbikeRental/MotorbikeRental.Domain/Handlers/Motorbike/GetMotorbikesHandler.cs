@@ -16,7 +16,7 @@ namespace MotorbikeRental.Domain.Handlers.Motorbike
 
         public async Task<CommandResult> Handle(GetMotorbikesCommand request, CancellationToken cancellationToken)
         {
-            var motorbikes = await _motorbikeRepository.GetAllMotorbikes(request.Plate);
+            var motorbikes = await _motorbikeRepository.GetAllMotorbikesAsync(request.Plate);
 
             if (request.Plate != null)
                 return new CommandResult { Message = "Motos registradas na plataforma.", Data = motorbikes };
