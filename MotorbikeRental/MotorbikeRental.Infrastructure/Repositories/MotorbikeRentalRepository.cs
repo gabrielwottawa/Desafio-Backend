@@ -23,8 +23,8 @@ namespace MotorbikeRental.Infrastructure.Repositories
             try
             {
                 await _postgreSQLDatabaseContext.Connection.ExecuteAsync(
-                        @"INSERT INTO motorbikerentals(startdate, enddate, estimatedenddate, rentalplansid, motorbikeid, motorbikeplate, courierid, couriercnpj, courierregisternumber)
-	                        VALUES (@startdate, @enddate, @estimatedenddate, @rentalplansid, @motorbikeid, @motorbikeplate, @courierid, @couriercnpj, @courierregisternumber)"
+                        @"INSERT INTO motorbikerentals(startdate, enddate, estimatedenddate, rentalplansid, motorbikeid, motorbikeplate, courierid, couriercnpj, courierregisternumber, activerental, status)
+	                        VALUES (@startdate, @enddate, @estimatedenddate, @rentalplansid, @motorbikeid, @motorbikeplate, @courierid, @couriercnpj, @courierregisternumber, @activerental, @status)"
                         , new
                         {
                             motorbikeRentals.StartDate,
@@ -35,7 +35,9 @@ namespace MotorbikeRental.Infrastructure.Repositories
                             motorbikeRentals.MotorbikePlate,
                             motorbikeRentals.CourierId,
                             motorbikeRentals.CourierCnpj,
-                            motorbikeRentals.CourierRegisterNumber
+                            motorbikeRentals.CourierRegisterNumber,
+                            motorbikeRentals.ActiveRental,
+                            motorbikeRentals.Status
                         }
                         , _transaction);
 
@@ -47,7 +49,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task<bool> MotorbikeIsRented(string plate)
+        public async Task<bool> IsRentedMotorbike(string plate)
         {
             BeginTransaction();
 
@@ -74,6 +76,43 @@ namespace MotorbikeRental.Infrastructure.Repositories
                 _transaction.Rollback();
                 throw;
             }
+        }
+
+        public bool IsRentedMotorbikes(string plate)
+        {
+            var result = _postgreSQLDatabaseContext.Connection.QuerySingleOrDefault<MotorbikeRentals>(
+                        @"SELECT 
+                            * 
+                        FROM 
+                            motorbikerentals
+                        WHERE
+                            motorbikeplate = @plate
+                                AND activerental = 1"
+                        , new { plate }
+                        );
+
+            return result != null;
+        }
+
+        public void InsertMotorbikeRentals(MotorbikeRentals motorbikeRentals)
+        {
+            _postgreSQLDatabaseContext.Connection.Execute(
+                    @"INSERT INTO motorbikerentals(startdate, enddate, estimatedenddate, rentalplansid, motorbikeid, motorbikeplate, courierid, couriercnpj, courierregisternumber, activerental, status)
+	                        VALUES (@startdate, @enddate, @estimatedenddate, @rentalplansid, @motorbikeid, @motorbikeplate, @courierid, @couriercnpj, @courierregisternumber, @activerental, @status)"
+                    , new
+                    {
+                        motorbikeRentals.StartDate,
+                        motorbikeRentals.EndDate,
+                        motorbikeRentals.EstimatedEndDate,
+                        motorbikeRentals.RentalPlansId,
+                        motorbikeRentals.MotorbikeId,
+                        motorbikeRentals.MotorbikePlate,
+                        motorbikeRentals.CourierId,
+                        motorbikeRentals.CourierCnpj,
+                        motorbikeRentals.CourierRegisterNumber,
+                        motorbikeRentals.ActiveRental,
+                        motorbikeRentals.Status
+                    });
         }
 
         private void BeginTransaction()

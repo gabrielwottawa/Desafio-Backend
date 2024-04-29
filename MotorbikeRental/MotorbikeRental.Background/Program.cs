@@ -1,38 +1,22 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using MotorbikeRental.Background.Consumer;
+﻿using MotorbikeRental.Background.Consumer;
 
 namespace MotorbikeRental.Background
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            var serviceProvider = host.Services;
+            var consumerQueueCouriers = new RabbitConsumerQueueCouriersBackground();
+            var consumerQueueMotorbikeRentals = new RabbitConsumerQueueMotorbikeRentalsBackground();
 
-            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            var consumer = new RabbitConsumerBackground(configuration);
-
-            // Inicia o consumo de mensagens a cada 10 segundos
-            var timer = new Timer(_ =>
+            while (true)
             {
-                consumer.ConsumeCreateCouriers();
-            }, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+                if (consumerQueueCouriers.ExistsMessages("QueueCouriersCreate"))
+                    consumerQueueCouriers.ConsumeCreateCouriers("QueueCouriersCreate");
 
-            await host.RunAsync();
+                if (consumerQueueMotorbikeRentals.ExistsMessages("QueueMotorbikeRentals"))
+                    consumerQueueMotorbikeRentals.ConsumeCreate("QueueMotorbikeRentals");
+            }
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    config.AddJsonFile($"appsettings.Development.json");
-                })
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddSingleton<RabbitConsumerBackground>();
-                });
     }
 }

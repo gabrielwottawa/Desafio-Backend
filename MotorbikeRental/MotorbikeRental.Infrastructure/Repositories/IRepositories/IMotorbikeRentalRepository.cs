@@ -5,6 +5,8 @@ namespace MotorbikeRental.Infrastructure.Repositories.IRepositories
     public interface IMotorbikeRentalRepository
     {
         Task InsertMotorbikeRental(MotorbikeRentals motorbikeRentals);
-        Task<bool> MotorbikeIsRented(string plate);
+        Task<bool> IsRentedMotorbike(string plate);
+        bool IsRentedMotorbikes(string plate);
+        void InsertMotorbikeRentals(MotorbikeRentals motorbikeRentals);
     }
 }

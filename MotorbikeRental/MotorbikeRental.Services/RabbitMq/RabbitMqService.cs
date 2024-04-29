@@ -1,5 +1,5 @@
-﻿using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
+﻿using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
@@ -9,13 +9,13 @@ namespace MotorbikeRental.Services.RabbitMq
     {
         private ConnectionFactory connectionFactory;
 
-        public RabbitMqService()
+        public RabbitMqService(IConfiguration configuration)
         {
             connectionFactory = new ConnectionFactory()
             {
-                HostName = "localhost",
-                UserName = "admin",
-                Password = "123"
+                HostName = RabbitHostName(configuration),
+                UserName = RabbitUserName(configuration),
+                Password = RabbitPassword(configuration)
             };
         }
 
@@ -32,35 +32,16 @@ namespace MotorbikeRental.Services.RabbitMq
             channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
         }
 
-        public async Task<T> ConsumeMessageAsync(string queueName)
-        {
-            T message = default;
-            var tcs = new TaskCompletionSource<T>();
-            using var connection = connectionFactory.CreateConnection();
-            using var channel = connection.CreateModel();
+        private static string ConnectionString(IConfigurationRoot configuration)
+            => configuration.GetSection("ConnectionStrings:PostgreSQLConnectionString").Value;
 
-            channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
-            var consumer = new AsyncEventingBasicConsumer(channel);
+        private static string RabbitHostName(IConfiguration configuration)
+            => configuration.GetSection("RabbitMQConnection:HostName").Value;
 
-            channel.BasicConsume(queue: queueName,
-                                autoAck: true,
-                                consumer: consumer);
+        private static string RabbitUserName(IConfiguration configuration)
+            => configuration.GetSection("RabbitMQConnection:UserName").Value;
 
-            consumer.Received += async (sender, eventArgs) =>
-            {
-                var body = eventArgs.Body.ToArray();
-                var json = Encoding.UTF8.GetString(body);
-                message = JsonSerializer.Deserialize<T>(json);
-                await Task.Yield();
-                channel.BasicAck(eventArgs.DeliveryTag, false);
-                tcs.SetResult(message);
-            };
-
-            //channel.BasicConsume(queue: queueName,
-            //                    autoAck: false,
-            //                    consumer: consumer);
-
-            return await tcs.Task;
-        }
+        private static string RabbitPassword(IConfiguration configuration)
+            => configuration.GetSection("RabbitMQConnection:Password").Value;
     }
 }

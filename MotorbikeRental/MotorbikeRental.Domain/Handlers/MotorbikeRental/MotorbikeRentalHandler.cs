@@ -1,11 +1,14 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Configuration;
 using MotorbikeRental.Domain.Commands.MotorbikeRental;
+using MotorbikeRental.Domain.Enum;
 using MotorbikeRental.Domain.Extensions;
 using MotorbikeRental.Domain.Responses;
 using MotorbikeRental.Domain.Validations;
 using MotorbikeRental.Domain.Validations.MotorbikeRental;
 using MotorbikeRental.Infrastructure.Models;
 using MotorbikeRental.Infrastructure.Repositories.IRepositories;
+using MotorbikeRental.Services.RabbitMq;
 
 namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
 {
@@ -16,6 +19,7 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
         private readonly IMotorbikeRentalRepository _motorbikeRentalRepository;
         private readonly IRentalPlansRepository _rentalPlansRepository;
         private readonly IRegisterTypeRepository _registerRegisterTypeRepository;
+        private readonly IConfiguration _configuration;
         private readonly Validator<CreateMotorbikeRentalCommand> _validator = new(new CreateMotorbikeRentalCommandValidator());
 
         public MotorbikeRentalHandler(ICouriersRepository couriersRepository
@@ -41,7 +45,7 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
             var courier = await _couriersRepository.GetCourierByCnpj(request.CourierCnpj.RemoveSpecialCharacters(), request.CourierRegisterNumber)
                                ?? throw new ApplicationException($"Não existe entregador com o CNPJ '{request.CourierCnpj}' e a CNH '{request.CourierRegisterNumber}' fornecidos.");
 
-            if (await _motorbikeRentalRepository.MotorbikeIsRented(motorbike.Plate))
+            if (await _motorbikeRentalRepository.IsRentedMotorbike(motorbike.Plate))
                 throw new ApplicationException("Está moto está alugada.");
 
             var courierRegisterType = await _registerRegisterTypeRepository.GetRegisterTypeById(courier.RegisterTypeId);
@@ -65,10 +69,12 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
                 MotorbikePlate = motorbike.Plate,
                 CourierId = courier.Id,
                 CourierCnpj = courier.Cnpj.RemoveSpecialCharacters(),
-                CourierRegisterNumber = courier.RegisterNumber
+                CourierRegisterNumber = courier.RegisterNumber,
+                Status = (int)MotorbikeRentalStatus.Processing
             };
 
-            await _motorbikeRentalRepository.InsertMotorbikeRental(newMotorbikeRental);
+            var rabbitMqService = new RabbitMqService<MotorbikeRentals>(_configuration);
+            rabbitMqService.SendMessage(newMotorbikeRental, _configuration.GetSection("QueueMotorbikeRentals:QueueMotorbikeRentals").Value);
 
             return new CommandResult { Message = $"Aluguel da moto '{motorbike.Type}' com a placa: '{motorbike.Plate}' feito com sucesso." };
         }

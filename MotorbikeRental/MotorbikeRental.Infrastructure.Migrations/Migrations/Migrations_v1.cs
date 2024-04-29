@@ -44,7 +44,7 @@ namespace MotorbikeRental.Infrastructure.Migrations.Migrations
                 .WithColumn("registertypeid").AsInt32().NotNullable().ForeignKey("FK_RegisterTypeId", "registertype", "id")
                 .WithColumn("urlimage").AsString(100).Nullable();
 
-            Create.PrimaryKey("PK_Couriers").OnTable("couriers").Columns("id", "cnpj", "registernumber");
+            Create.PrimaryKey("PK_Couriers").OnTable("couriers").Columns("cnpj", "registernumber");
 
             Create.Table("rentalplans")
                 .WithColumn("id").AsInt32().Identity().NotNullable().PrimaryKey()
@@ -57,20 +57,21 @@ namespace MotorbikeRental.Infrastructure.Migrations.Migrations
                 .WithColumn("enddate").AsDateTime().NotNullable()
                 .WithColumn("estimatedenddate").AsDateTime().NotNullable()
                 .WithColumn("rentalplansid").AsInt32().NotNullable().ForeignKey("FK_RentalPlansId", "rentalplans", "id")
-                .WithColumn("motorbikeid").AsInt32().NotNullable().ForeignKey()
-                .WithColumn("motorbikeplate").AsString(10).NotNullable().ForeignKey()
+                .WithColumn("motorbikeid").AsInt32().NotNullable()
+                .WithColumn("motorbikeplate").AsString(10).NotNullable()
                 .WithColumn("courierid").AsInt32().NotNullable()
                 .WithColumn("couriercnpj").AsString(25).NotNullable()
                 .WithColumn("courierregisternumber").AsString().NotNullable()
-                .WithColumn("activerental").AsInt32().WithDefaultValue(1).NotNullable();
+                .WithColumn("activerental").AsInt32().WithDefaultValue(1).NotNullable()
+                .WithColumn("status").AsInt32().WithDefaultValue(0).NotNullable();
 
             Create.ForeignKey("FK_Motorbike")
                 .FromTable("motorbikerentals").ForeignColumns("motorbikeid", "motorbikeplate")
                 .ToTable("motorbike").PrimaryColumns("id", "plate");
 
             Create.ForeignKey("FK_Courier")
-                .FromTable("motorbikerentals").ForeignColumns("courierid", "couriercnpj", "courierregisternumber")
-                .ToTable("couriers").PrimaryColumns("id", "cnpj", "registernumber");
+                .FromTable("motorbikerentals").ForeignColumns("couriercnpj", "courierregisternumber")
+                .ToTable("couriers").PrimaryColumns("cnpj", "registernumber");
 
             InsertDataRegisterType();
             InsertDataUserType();

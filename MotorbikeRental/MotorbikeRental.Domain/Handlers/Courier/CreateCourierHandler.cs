@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Configuration;
 using MotorbikeRental.Domain.Commands.Courier;
 using MotorbikeRental.Domain.Extensions;
 using MotorbikeRental.Domain.Responses;
@@ -14,13 +15,16 @@ namespace MotorbikeRental.Domain.Handlers.Courier
     {
         private readonly ICouriersRepository _couriersRepository;
         private readonly IRegisterTypeRepository _registerTypeRepository;
+        private readonly IConfiguration _configuration;
         private readonly Validator<CreateCourierCommand> _validator = new(new CreateCourierCommandValidator());
 
         public CreateCourierHandler(ICouriersRepository couriersRepository
-                                    , IRegisterTypeRepository registerTypeRepository)
+                                    , IRegisterTypeRepository registerTypeRepository
+                                    , IConfiguration configuration)
         {
             _couriersRepository = couriersRepository;
             _registerTypeRepository = registerTypeRepository;
+            _configuration = configuration;
         }
 
         public async Task<CommandResult> Handle(CreateCourierCommand request, CancellationToken cancellationToken)
@@ -44,10 +48,8 @@ namespace MotorbikeRental.Domain.Handlers.Courier
                 RegisterTypeId = registerType.Id
             };
 
-            var rabbitMqService = new RabbitMqService<Couriers>();
-            rabbitMqService.SendMessage(newCourier, "QueueCouriersCreate");
-
-            //await _couriersRepository.InsertCourier(newCourier);
+            var rabbitMqService = new RabbitMqService<Couriers>(_configuration);
+            rabbitMqService.SendMessage(newCourier, _configuration.GetSection("QueueCouriersCreate:QueueCouriersCreate").Value);
 
             return new CommandResult { Message = "Entregador cadastrado com sucesso.", Data = null };
         }
