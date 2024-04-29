@@ -10,11 +10,14 @@ namespace MotorbikeRental.Domain.Handlers.Motorbike
     public class DeleteMotorbikeHandler : IRequestHandler<DeleteMotorbikeCommand, CommandResult>
     {
         private readonly IMotorbikeRepository _motorbikeRepository;
+        private readonly IMotorbikeRentalRepository _motorbikeRentalRepository;
         private readonly Validator<DeleteMotorbikeCommand> _validator = new(new DeleteMotorbikeCommandValidator());
 
-        public DeleteMotorbikeHandler(IMotorbikeRepository motorbikeRepository)
+        public DeleteMotorbikeHandler(IMotorbikeRepository motorbikeRepository
+                                    , IMotorbikeRentalRepository motorbikeRentalRepository)
         {
             _motorbikeRepository = motorbikeRepository;
+            _motorbikeRentalRepository = motorbikeRentalRepository;
         }
 
         public async Task<CommandResult> Handle(DeleteMotorbikeCommand request, CancellationToken cancellationToken)
@@ -24,7 +27,10 @@ namespace MotorbikeRental.Domain.Handlers.Motorbike
             var motorbike = await _motorbikeRepository.GetMotorbikeById(request.Id)
                 ?? throw new ApplicationException($"Não existe moto cadastrada com o id {request.Id} informado.");
 
-            //validar sem a moto não tem registro de locação
+            var motorbikeExists = await _motorbikeRentalRepository.IsRentedMotorbike(motorbike.Plate);
+
+            if (motorbikeExists)
+                throw new ApplicationException($"A moto informada já possui registros de aluguel. Não pode ser deletada.");
 
             await _motorbikeRepository.DeleteMotorbikeById(request.Id);
 

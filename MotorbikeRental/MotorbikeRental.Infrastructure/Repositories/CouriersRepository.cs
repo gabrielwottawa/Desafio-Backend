@@ -43,7 +43,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task InsertCourier(Couriers courier)
+        public async Task InsertCourierAsync(Couriers courier)
         {
             BeginTransaction();
 
@@ -82,6 +82,16 @@ namespace MotorbikeRental.Infrastructure.Repositories
                 throw;
             }
         }
+
+        public void InsertCourier(Couriers courier)
+        {
+            _postgreSQLDatabaseContext.Connection.Execute(
+                   @"INSERT INTO couriers(name, cnpj, dateofbirth, registernumber, registertypeid)
+	                        VALUES (@name, @cnpj, @dateofbirth, @registernumber, @registertypeid)"
+                   , new { courier.Name, courier.Cnpj, courier.DateOfBirth, courier.RegisterNumber, courier.RegisterTypeId }
+                   );
+        }
+
 
         private void BeginTransaction()
         {

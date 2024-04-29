@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotorbikeRental.Infrastruct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotorbikeRental.Services", "MotorbikeRental.Services\MotorbikeRental.Services.csproj", "{FE7B7BBD-82D5-400A-8846-21B76678AC59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorbikeRental.Background", "MotorbikeRental.Background\MotorbikeRental.Background.csproj", "{4BB59289-184D-499A-8399-D2838181E55F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{FE7B7BBD-82D5-400A-8846-21B76678AC59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE7B7BBD-82D5-400A-8846-21B76678AC59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE7B7BBD-82D5-400A-8846-21B76678AC59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BB59289-184D-499A-8399-D2838181E55F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BB59289-184D-499A-8399-D2838181E55F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BB59289-184D-499A-8399-D2838181E55F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BB59289-184D-499A-8399-D2838181E55F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

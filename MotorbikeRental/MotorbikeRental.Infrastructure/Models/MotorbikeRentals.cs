@@ -13,5 +13,6 @@
         public string CourierCnpj { get; set; }
         public string CourierRegisterNumber { get; set; }
         public int ActiveRental { get; set; }
+        public int Status { get; set; }
     }
 }

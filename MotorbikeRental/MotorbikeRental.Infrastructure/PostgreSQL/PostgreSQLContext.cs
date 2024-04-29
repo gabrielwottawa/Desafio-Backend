@@ -5,8 +5,9 @@ namespace MotorbikeRental.Infrastructure.PostgreSQL
     public class PostgreSQLContext : PostgreSQLDatabaseContext
     {
         public PostgreSQLContext(IConfiguration configuration) 
-            : base(configuration.GetConnectionString("PostgreSQLConnectionString"))
-        {
-        }
+            : base(configuration.GetConnectionString("PostgreSQLConnectionString")) { }
+
+        public PostgreSQLContext(string connectionString)
+            : base(connectionString) { }
     }
 }
