@@ -32,5 +32,18 @@ namespace MotorbikeRental.Controllers
                 return BadRequest(new { ex.Message });
             }
         }
+
+        [HttpGet("get-total-rental-value")]
+        public async Task<IActionResult> GetTotalRentalValue([FromBody] GetTotalRentalValueCommand command)
+        {
+            try
+            {
+                return Ok(await mediator.Send(command));
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
     }
 }

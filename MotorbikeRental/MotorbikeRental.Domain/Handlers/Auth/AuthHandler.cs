@@ -19,14 +19,14 @@ namespace MotorbikeRental.Domain.Handlers.Auth
 
         public async Task<CommandResult> Handle(AuthCommand request, CancellationToken cancellationToken)
         {
-            var user = await _usersRepository.GetUser(request.Name, request.Password)
+            var user = await _usersRepository.GetUserAsync(request.Name, request.Password)
                             ?? throw new ApplicationException("Usuário não encontrado.");
 
             if (user.Token != null && user.TokenDateExpire > DateTime.Now)
                 return new CommandResult { Message = "Token de acesso", Data = new { user.Token } };
 
             var token = _authService.Authenticate(user);
-            await _usersRepository.UpdateToken(user.Id, token, DateTime.UtcNow.AddHours(1));
+            await _usersRepository.UpdateTokenAsync(user.Id, token, DateTime.UtcNow.AddHours(1));
 
             return new CommandResult { Message = "Token de acesso", Data = new { Token = token } };
         }

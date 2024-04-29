@@ -16,7 +16,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             _postgreSQLDatabaseContext = postgreSQLDatabaseContext;
         }
 
-        public async Task<RegisterType> GetRegisterTypeById(int id)
+        public async Task<RegisterType> GetRegisterTypeByIdAsync(int id)
         {
             BeginTransaction();
 
@@ -38,7 +38,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task<RegisterType> GetRegisterTypeByType(string registerType)
+        public async Task<RegisterType> GetRegisterTypeByTypeAsync(string registerType)
         {
             BeginTransaction();
 

@@ -25,45 +25,47 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
         public MotorbikeRentalHandler(ICouriersRepository couriersRepository
                                         , IMotorbikeRepository motorbikeRepository
                                         , IMotorbikeRentalRepository motorbikeRentalRepository
-                                        , IRentalPlansRepository populationRepository
-                                        , IRegisterTypeRepository registerRegisterTypeRepository)
+                                        , IRentalPlansRepository rentalPlansRepository
+                                        , IRegisterTypeRepository registerRegisterTypeRepository
+                                        , IConfiguration configuration)
         {
             _couriersRepository = couriersRepository;
             _motorbikeRepository = motorbikeRepository;
             _motorbikeRentalRepository = motorbikeRentalRepository;
-            _rentalPlansRepository = populationRepository;
+            _rentalPlansRepository = rentalPlansRepository;
             _registerRegisterTypeRepository = registerRegisterTypeRepository;
+            _configuration = configuration;
         }
 
         public async Task<CommandResult> Handle(CreateMotorbikeRentalCommand request, CancellationToken cancellationToken)
         {
             await _validator.ValidateAsync(request, cancellationToken);
 
-            var motorbike = await _motorbikeRepository.GetMotorbikeByPlate(request.MotorbikePlate)
+            var motorbike = await _motorbikeRepository.GetMotorbikeByPlateAsync(request.MotorbikePlate)
                                ?? throw new ApplicationException($"Não existe moto com a placa '{request.MotorbikePlate}' fornecidos.");
 
-            var courier = await _couriersRepository.GetCourierByCnpj(request.CourierCnpj.RemoveSpecialCharacters(), request.CourierRegisterNumber)
+            var courier = await _couriersRepository.GetCourierByCnpjAndRegisterNumberAsync(request.CourierCnpj.RemoveSpecialCharacters(), request.CourierRegisterNumber)
                                ?? throw new ApplicationException($"Não existe entregador com o CNPJ '{request.CourierCnpj}' e a CNH '{request.CourierRegisterNumber}' fornecidos.");
 
-            if (await _motorbikeRentalRepository.IsRentedMotorbike(motorbike.Plate))
+            if (await _motorbikeRentalRepository.IsRentedMotorbikeAsync(motorbike.Plate))
                 throw new ApplicationException("Está moto está alugada.");
 
-            var courierRegisterType = await _registerRegisterTypeRepository.GetRegisterTypeById(courier.RegisterTypeId);
+            var courierRegisterType = await _registerRegisterTypeRepository.GetRegisterTypeByIdAsync(courier.RegisterTypeId);
 
             if (courierRegisterType.Type == "B")
                 throw new ApplicationException($"Este entregador não possui a CNH do tipo 'A' ou 'AB'. CNH do entregador: '{courierRegisterType.Type}'");
 
-            var rentalPlan = await _rentalPlansRepository.GetRentalPlanById(request.RentalPlansId) 
+            var rentalPlan = await _rentalPlansRepository.GetRentalPlanByIdAsync(request.RentalPlansId) 
                                ?? throw new ApplicationException("O plano informado não existe.");
 
-            if (rentalPlan.NumberDays < request.EstimatedEndDate.DaysDifference())
+            if (rentalPlan.NumberDays < request.EstimatedEndDate.DaysDifference(DateTime.Now, 1))
                 throw new ApplicationException($"A data de estimativa de término é maior que a data de fim do plano selecionado.");
 
             var newMotorbikeRental = new MotorbikeRentals
             {
-                StartDate = DateTime.Now.AddDays(1),
-                EndDate = DateTime.Now.AddDays(1 + rentalPlan.NumberDays),
-                EstimatedEndDate = request.EstimatedEndDate,
+                StartDate = Convert.ToDateTime(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")),
+                EndDate = Convert.ToDateTime(DateTime.Now.AddDays(rentalPlan.NumberDays).ToString("yyyy-MM-dd")),
+                EstimatedEndDate = Convert.ToDateTime(request.EstimatedEndDate.ToString("yyyy-MM-dd")),
                 RentalPlansId = rentalPlan.Id,
                 MotorbikeId = motorbike.Id,
                 MotorbikePlate = motorbike.Plate,
@@ -74,7 +76,7 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
             };
 
             var rabbitMqService = new RabbitMqService<MotorbikeRentals>(_configuration);
-            rabbitMqService.SendMessage(newMotorbikeRental, _configuration.GetSection("QueueMotorbikeRentals:QueueMotorbikeRentals").Value);
+            rabbitMqService.SendMessage(newMotorbikeRental, _configuration.GetSection("RabbitQueues:MotorbikeRentals").Value);
 
             return new CommandResult { Message = $"Aluguel da moto '{motorbike.Type}' com a placa: '{motorbike.Plate}' feito com sucesso." };
         }

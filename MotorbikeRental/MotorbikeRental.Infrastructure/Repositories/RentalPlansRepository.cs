@@ -16,7 +16,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             _postgreSQLDatabaseContext = postgreSQLDatabaseContext;
         }
 
-        public async Task<IEnumerable<RentalPlans>> GetAllRentalPlans()
+        public async Task<IEnumerable<RentalPlans>> GetAllRentalPlansAsync()
         {
             BeginTransaction();
 
@@ -37,7 +37,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task<RentalPlans> GetRentalPlanById(int id)
+        public async Task<RentalPlans> GetRentalPlanByIdAsync(int id)
         {
             BeginTransaction();
 

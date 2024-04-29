@@ -24,15 +24,15 @@ namespace MotorbikeRental.Domain.Handlers.Motorbike
         {
             await _validator.ValidateAsync(request, cancellationToken);
 
-            var motorbike = await _motorbikeRepository.GetMotorbikeById(request.Id)
+            var motorbike = await _motorbikeRepository.GetMotorbikeByIdAsync(request.Id)
                 ?? throw new ApplicationException($"Não existe moto cadastrada com o id {request.Id} informado.");
 
-            var motorbikeExists = await _motorbikeRentalRepository.IsRentedMotorbike(motorbike.Plate);
+            var motorbikeExists = await _motorbikeRentalRepository.IsRentedMotorbikeAsync(motorbike.Plate);
 
             if (motorbikeExists)
                 throw new ApplicationException($"A moto informada já possui registros de aluguel. Não pode ser deletada.");
 
-            await _motorbikeRepository.DeleteMotorbikeById(request.Id);
+            await _motorbikeRepository.DeleteMotorbikeByIdAsync(request.Id);
 
             return new CommandResult { Message = "Moto deleta com sucesso.", Data = null };
         }

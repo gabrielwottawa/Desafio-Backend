@@ -16,7 +16,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             _postgreSQLDatabaseContext = postgreSQLDatabaseContext;
         }
 
-        public async Task<Couriers> GetCourierByCnpj(string cnpj, string registerNumber)
+        public async Task<Couriers> GetCourierByCnpjAndRegisterNumberAsync(string cnpj, string registerNumber)
         {
             BeginTransaction();
 
@@ -64,7 +64,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task InsertUrlImage(int id, string urlImage)
+        public async Task InsertUrlImageAsync(int id, string urlImage)
         {
             BeginTransaction();
 

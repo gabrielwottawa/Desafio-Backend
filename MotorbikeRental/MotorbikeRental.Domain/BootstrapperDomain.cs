@@ -35,8 +35,9 @@ namespace MotorbikeRental.Domain
             services.AddScoped<IRequestHandler<PostDocumentCourierCommand, CommandResult>, PostDocumentCourierHandler>();
             #endregion
 
-            #region
+            #region MotorbikeRentalController
             services.AddScoped<IRequestHandler<CreateMotorbikeRentalCommand, CommandResult>, MotorbikeRentalHandler>();
+            services.AddScoped<IRequestHandler<GetTotalRentalValueCommand, CommandResult>, GetTotalRentalValueHandler>();
             #endregion
         }
     }

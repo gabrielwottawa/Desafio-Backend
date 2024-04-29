@@ -31,12 +31,12 @@ namespace MotorbikeRental.Domain.Handlers.Courier
         {
             await _validator.ValidateAsync(request, cancellationToken);
 
-            var courier = await _couriersRepository.GetCourierByCnpj(request.Cnpj.RemoveSpecialCharacters(), request.RegisterNumber);
+            var courier = await _couriersRepository.GetCourierByCnpjAndRegisterNumberAsync(request.Cnpj.RemoveSpecialCharacters(), request.RegisterNumber);
 
             if (courier != null)
                 throw new ApplicationException($"Já existe um entregador cadastrado com esse CNPJ: '{request.Cnpj}' e CNH: '{request.RegisterNumber}'");
 
-            var registerType = await _registerTypeRepository.GetRegisterTypeByType(request.RegisterType)
+            var registerType = await _registerTypeRepository.GetRegisterTypeByTypeAsync(request.RegisterType)
                                     ?? throw new ApplicationException($"Não existe o tipo de CNH {request.RegisterType}, as opções disponíveis são A, B ou AB.");
 
             var newCourier = new Couriers
@@ -49,7 +49,7 @@ namespace MotorbikeRental.Domain.Handlers.Courier
             };
 
             var rabbitMqService = new RabbitMqService<Couriers>(_configuration);
-            rabbitMqService.SendMessage(newCourier, _configuration.GetSection("QueueCouriersCreate:QueueCouriersCreate").Value);
+            rabbitMqService.SendMessage(newCourier, _configuration.GetSection("RabbitQueues:CouriersCreate").Value);
 
             return new CommandResult { Message = "Entregador cadastrado com sucesso.", Data = null };
         }

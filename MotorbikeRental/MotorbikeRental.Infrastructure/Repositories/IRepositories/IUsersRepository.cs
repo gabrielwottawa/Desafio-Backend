@@ -4,7 +4,7 @@ namespace MotorbikeRental.Infrastructure.Repositories.IRepositories
 {
     public interface IUsersRepository
     {
-        Task<Users> GetUser(string name, string password);
-        Task UpdateToken(int id, string token, DateTime tokenDateExpire);
+        Task<Users> GetUserAsync(string name, string password);
+        Task UpdateTokenAsync(int id, string token, DateTime tokenDateExpire);
     }
 }

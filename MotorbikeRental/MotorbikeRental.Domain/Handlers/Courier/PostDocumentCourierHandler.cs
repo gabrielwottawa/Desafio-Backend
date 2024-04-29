@@ -34,7 +34,7 @@ namespace MotorbikeRental.Domain.Handlers.Courier
 
             await File.WriteAllBytesAsync(filePath, Convert.FromBase64String(request.Content));
 
-            await _couriersRepository.InsertUrlImage(request.Id, filePath);
+            await _couriersRepository.InsertUrlImageAsync(request.Id, filePath);
 
             return new CommandResult { Message = "Documento enviado com sucesso." };
         }

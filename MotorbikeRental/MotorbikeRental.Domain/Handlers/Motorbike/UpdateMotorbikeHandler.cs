@@ -22,7 +22,7 @@ namespace MotorbikeRental.Domain.Handlers.Motorbike
         {
             await _validator.ValidateAsync(request, cancellationToken);
 
-            var motorbike = await _motorbikeRepository.GetMotorbikeById(request.Id);
+            var motorbike = await _motorbikeRepository.GetMotorbikeByIdAsync(request.Id);
 
             if (motorbike == null) 
                 throw new ApplicationException($"Não existe moto cadastrada com o id {request.Id} informado.");
@@ -30,12 +30,12 @@ namespace MotorbikeRental.Domain.Handlers.Motorbike
             if (motorbike.Plate == request.Plate)
                 throw new ApplicationException($"A placa informada é a mesma já cadastrada para essa moto.");
 
-            var existOtherMotorbike = await _motorbikeRepository.GetMotorbikeByPlate(request.Plate);
+            var existOtherMotorbike = await _motorbikeRepository.GetMotorbikeByPlateAsync(request.Plate);
 
             if (existOtherMotorbike != null && !existOtherMotorbike.Id.Equals(motorbike.Id))
                 throw new ApplicationException($"A placa informada é a mesma já cadastrada para outra moto.");
 
-            await _motorbikeRepository.UpdateMotorbike(request.Id, request.Plate);
+            await _motorbikeRepository.UpdateMotorbikeAsync(request.Id, request.Plate);
 
             return new CommandResult { Message = $"Moto atualiza com sucesso. Nova placa '{request.Plate}'", Data = null };
         }

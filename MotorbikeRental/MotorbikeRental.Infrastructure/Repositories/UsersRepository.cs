@@ -16,7 +16,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             _postgreSQLDatabaseContext = postgreSQLDatabaseContext;
         }
 
-        public async Task<Users> GetUser(string name, string password)
+        public async Task<Users> GetUserAsync(string name, string password)
         {
             BeginTransaction();
 
@@ -45,7 +45,7 @@ namespace MotorbikeRental.Infrastructure.Repositories
             }
         }
 
-        public async Task UpdateToken(int id, string token, DateTime tokenDateExpire)
+        public async Task UpdateTokenAsync(int id, string token, DateTime tokenDateExpire)
         {
             BeginTransaction();
 

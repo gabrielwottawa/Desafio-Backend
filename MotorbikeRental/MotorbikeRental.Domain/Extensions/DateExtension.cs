@@ -2,10 +2,9 @@
 {
     public static class DateExtension
     {
-        public static int DaysDifference(this DateTime dateTime)
+        public static int DaysDifference(this DateTime dateTime1, DateTime dateTime2, int extraDays = 0)
         {
-            var dateTimeNow = DateTime.Now;
-            TimeSpan timeSpan = dateTime.AddDays(1) - dateTimeNow;
+            TimeSpan timeSpan = dateTime1.AddDays(extraDays) - dateTime2;
             return timeSpan.Days;
         }
     }
