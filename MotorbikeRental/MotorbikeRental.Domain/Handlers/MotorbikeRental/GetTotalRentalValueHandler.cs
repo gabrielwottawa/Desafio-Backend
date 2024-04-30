@@ -5,7 +5,6 @@ using MotorbikeRental.Domain.Responses;
 using MotorbikeRental.Domain.Validations;
 using MotorbikeRental.Domain.Validations.MotorbikeRental;
 using MotorbikeRental.Infrastructure.Repositories.IRepositories;
-using System;
 
 namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
 {
