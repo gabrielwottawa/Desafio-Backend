@@ -19,6 +19,15 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 ```
 git clone https://github.com/gabrielwottawa/Desafio-Backend.git
 ```
+- Abra o terminal da sua máquina e siga os passos:
+
+```
+cd {RAIZ ONDE FOI FEITO O CLONE}\Desafio-Backend\MotorbikeRental
+```
+- Execute o seguinte comando:
+```
+dotnet build
+```
 
 ### 🐘 Migrations
 
