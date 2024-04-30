@@ -21,6 +21,9 @@ namespace MotorbikeRental.Domain.Handlers.Courier
         {
             await _validator.ValidateAsync(request, cancellationToken);
 
+            var courier = await _couriersRepository.GetCourierByCnpjAndRegisterNumberAsync(request.Cnpj, request.RegisterNumber)
+                            ?? throw new ApplicationException("Não existe entregador com os dados fornecidos.");
+
             var rootDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var rootDrive = Path.GetPathRoot(rootDirectory);
 
@@ -34,7 +37,7 @@ namespace MotorbikeRental.Domain.Handlers.Courier
 
             await File.WriteAllBytesAsync(filePath, Convert.FromBase64String(request.Content));
 
-            await _couriersRepository.InsertUrlImageAsync(request.Id, filePath);
+            await _couriersRepository.InsertUrlImageAsync(courier.Id, filePath);
 
             return new CommandResult { Message = "Documento enviado com sucesso." };
         }

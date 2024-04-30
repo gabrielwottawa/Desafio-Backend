@@ -5,7 +5,8 @@ namespace MotorbikeRental.Domain.Commands.Courier
 {
     public class PostDocumentCourierCommand : IRequest<CommandResult>
     {
-        public int Id { get; set; }
+        public string Cnpj { get; set; }
+        public string RegisterNumber { get; set; }
         public string FileName { get; set; }
         public string Content { get; set; }
     }

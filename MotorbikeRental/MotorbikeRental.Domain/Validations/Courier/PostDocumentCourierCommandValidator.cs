@@ -8,9 +8,21 @@ namespace MotorbikeRental.Domain.Validations.Courier
     {
         public PostDocumentCourierCommandValidator()
         {
-            RuleFor(x => x.Id)
-                .NotNull()
-                .WithMessage("O id deve ser informado.");
+            RuleFor(x => x.Cnpj)
+                .NotEmpty()
+                .WithMessage("O CNPJ deve ser preenchido.");
+
+            RuleFor(x => x.Cnpj.RemoveSpecialCharacters().Length != 14)
+                .Equal(false)
+                .WithMessage("O cnpj deve possuir 14 números para ser válido.");
+
+            RuleFor(x => x.Cnpj.Distinct().Count() == 1)
+                .Equal(false)
+                .WithMessage("O cnpj não pode possuir todos os números iguais.");
+
+            RuleFor(x => x.RegisterNumber)
+                .NotEmpty()
+                .WithMessage("O número da CNH deve ser preenchido.");
 
             RuleFor(x => x.FileName)
                 .NotEmpty()

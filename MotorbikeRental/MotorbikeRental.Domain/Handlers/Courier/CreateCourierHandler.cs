@@ -51,7 +51,7 @@ namespace MotorbikeRental.Domain.Handlers.Courier
             var rabbitMqService = new RabbitMqService<Couriers>(_configuration);
             rabbitMqService.SendMessage(newCourier, _configuration.GetSection("RabbitQueues:CouriersCreate").Value);
 
-            return new CommandResult { Message = "Entregador cadastrado com sucesso.", Data = null };
+            return new CommandResult { Message = "Entregador cadastrado com sucesso.", Data = newCourier };
         }
     }
 }
