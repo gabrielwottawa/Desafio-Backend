@@ -7,7 +7,7 @@ Objetivo é criar uma aplicação para gerenciar aluguel de motos e entregadores
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
 - Você instalou a versão `.NET 6.0`
-- Você instalou `PostgreSQL`
+- Você instalou o `PostgreSQL`
 - Você instalou o `Docker`.
 
 ## 🚀 Iniciando o Projeto
