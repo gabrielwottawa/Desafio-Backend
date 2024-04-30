@@ -235,7 +235,7 @@ namespace MotorbikeRental.Controllers
         [SwaggerResponse((int)HttpStatusCode.BadRequest, null, typeof(CommandResult))]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError, null, typeof(CommandResult))]
         [HttpDelete("delete-motorbike")]
-        public async Task<IActionResult> DeleteMotorbikeAsync([FromQuery] DeleteMotorbikeCommand command)
+        public async Task<IActionResult> DeleteMotorbikeAsync([FromBody] DeleteMotorbikeCommand command)
         {
             try
             {

@@ -34,7 +34,7 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
             if (request.EndDate <= motorbikeRental.EstimatedEndDate)
             {
                 var days = motorbikeRental.EstimatedEndDate.DaysDifference(request.EndDate);
-                var totalDays = motorbikeRental.EstimatedEndDate.DaysDifference(motorbikeRental.StartDate);
+                var totalDays = motorbikeRental.EstimatedEndDate.DaysDifference(motorbikeRental.StartDate, 1);
 
                 if (rentalPlan.NumberDays <= 7)
                 {
@@ -45,7 +45,7 @@ namespace MotorbikeRental.Domain.Handlers.MotorbikeRental
                 else
                 {
                     fine = (rentalPlan.ValuePerDay * Convert.ToDecimal(0.40)) * days;
-                    valueTotal = rentalPlan.ValuePerDay * (rentalPlan.NumberDays - days);
+                    valueTotal = rentalPlan.ValuePerDay * (totalDays - days);
                     valueTotal += fine;
                 }
             }
